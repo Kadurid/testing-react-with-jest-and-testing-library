@@ -3,11 +3,11 @@ import Options from '../Options';
 
 describe("Testes de Options", () => {
 
-  test("displays image for each scoop from server", () => {
+  test("displays image for each scoop from server", async () => {
     render(<Options optionType="scoops"/>)
 
     //find images
-    const scoopImages = screen.getAllByRole("img", {name: /scoop$/i});
+    const scoopImages = await screen.findAllByRole("img", {name: /scoop$/i});
     expect(scoopImages).toHaveLength(2);
 
     //confirm alt text of images
