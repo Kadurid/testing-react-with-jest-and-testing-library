@@ -1,7 +1,11 @@
 import React from 'react'
+import Options from './Options'
 
 export default function OrderEntry() {
   return (
-    <div>OrderEntry</div>
+    <>
+      <Options optionType="scoops" />
+      <Options optionType="toppings" />
+    </>
   )
 }
