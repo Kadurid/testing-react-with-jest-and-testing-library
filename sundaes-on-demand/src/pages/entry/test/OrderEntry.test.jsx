@@ -1,7 +1,6 @@
-import { render, screen, waitFor } from "@testing-library/react";
-import Options from "../Options";
-import { server } from "./../../../mocks/server";
 import { rest } from "msw";
+import { render, screen, waitFor } from "../../../test-utils/testing-library-utils";
+import { server } from "./../../../mocks/server";
 import OrderEntry from "./../OrderEntry";
 
 describe("Testing server error response", () => {
