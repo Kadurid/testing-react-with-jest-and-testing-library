@@ -1,11 +1,10 @@
-import { render, screen } from "@testing-library/react";
-import Options from "./../Options";
+import { render, screen } from "../../../test-utils/testing-library-utils";
 import userEvent from "@testing-library/user-event";
-import { OrderDetailsProvider } from "../../../contexts/OrderDetails";
+import Options from "./../Options";
 
 describe("Testando updates de valor e o total", () => {
   test("update scoop subtotal when scoops change", async () => {
-    render(<Options optionType="scoops" />, { wrapper: OrderDetailsProvider });
+    render(<Options optionType="scoops" />);
 
     //make sure total starts out $0.00
     const scoopsSubtotal = screen.getByText("Scoops total: $", { exact: false });
@@ -29,5 +28,29 @@ describe("Testando updates de valor e o total", () => {
     await userEvent.type(chocolateInput, "2");
 
     expect(scoopsSubtotal).toHaveTextContent("6.00");
+  });
+
+  test("update toppings subtotal when checkmark is check", async() => {
+    render(<Options optionType="toppings"/>);
+    //make sure starts with 0.00
+    const toppingSubtotal = screen.getByText("Toppings total: $", {exact: false});
+    expect(toppingSubtotal).toHaveTextContent("0.00");
+    //check one topping and see subtotal
+    const hotFudgeCheckmark = await screen.findByRole("checkbox", { name: "Hot fudge"});
+    await userEvent.click(hotFudgeCheckmark);
+    expect(hotFudgeCheckmark).toBeChecked();
+    expect(toppingSubtotal).toHaveTextContent("1.50");
+    //check two toppings and see subtotal
+    const mmCheckmark = await screen.findByRole("checkbox", {
+      name: "M&Ms"
+    });
+    await userEvent.click(mmCheckmark);
+    expect(mmCheckmark).toBeChecked();
+    expect(toppingSubtotal).toHaveTextContent("3.00");
+    //uncheck one topping and see subtotal
+    await userEvent.click(hotFudgeCheckmark);
+    expect(hotFudgeCheckmark).not.toBeChecked();
+    expect(toppingSubtotal).toHaveTextContent("1.50");
+
   });
 });
